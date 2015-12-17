@@ -23,6 +23,7 @@ class MasterViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        load()
         
         //adding Done button in navigation
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
@@ -38,8 +39,10 @@ class MasterViewController: UITableViewController {
         }
     }
 
+    //this is called when navigating from detail view to master view
     override func viewWillAppear(animated: Bool) {
         self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
+        save()
         super.viewWillAppear(animated)
     }
 
@@ -98,6 +101,20 @@ class MasterViewController: UITableViewController {
         } else if editingStyle == .Insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
         }
+    }
+    
+    func save(){
+        //save data to persistent storage
+        NSUserDefaults.standardUserDefaults().setObject(objects, forKey: keyNotes)
+        //save data instant
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
+    
+    func load(){
+        if let loadedData = NSUserDefaults.standardUserDefaults().arrayForKey(keyNotes) as? [String]{
+            objects = loadedData
+        }
+        
     }
 
 
