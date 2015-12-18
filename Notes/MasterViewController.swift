@@ -109,6 +109,20 @@ class MasterViewController: UITableViewController {
         }
     }
     
+    //this is called when enter and exit editing mode
+    override func setEditing(editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        if editing{
+            return
+        }
+        //when user clicks done the we exit from editing mode so we can save changes (delete)
+        save()
+    }
+    
+    override func tableView(tableView: UITableView, didEndEditingRowAtIndexPath indexPath: NSIndexPath) {
+        save()
+    }
+    
     func save(){
         //save data to persistent storage
         NSUserDefaults.standardUserDefaults().setObject(objects, forKey: keyNotes)
