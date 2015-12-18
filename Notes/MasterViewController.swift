@@ -23,8 +23,8 @@ class MasterViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        masterView = self
         load()
-        
         //adding Done button in navigation
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
 

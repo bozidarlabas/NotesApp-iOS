@@ -45,6 +45,24 @@ class DetailViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        if objects.count == 0{
+            return
+        }
+        objects[currentIndex] = detailDescriptionLabel.text
+        if detailDescriptionLabel.text == ""{
+            objects[currentIndex] = BLANK_NOTE
+        }
+        saveAndUpdate()
+    }
+    
+    func saveAndUpdate(){
+        //saving data and updating table view
+        masterView?.save()
+        masterView?.tableView.reloadData()
+    }
 
 
 }
