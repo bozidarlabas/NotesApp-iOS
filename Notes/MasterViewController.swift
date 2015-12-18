@@ -52,6 +52,9 @@ class MasterViewController: UITableViewController {
     }
 
     func insertNewObject(sender: AnyObject) {
+        if detailViewController?.detailDescriptionLabel.editable == false{
+            return //we can create new note if we are not in editing mode
+        }
         if objects.count == 0 || objects[0] != BLANK_NOTE{
             objects.insert(BLANK_NOTE, atIndex: 0)
             let indexPath = NSIndexPath(forRow: 0, inSection: 0)
@@ -65,15 +68,16 @@ class MasterViewController: UITableViewController {
     // MARK: - Segues
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        detailViewController?.detailDescriptionLabel.editable = true
         if segue.identifier == "showDetail" {
             if let indexPath = self.tableView.indexPathForSelectedRow {
-                let object = objects[indexPath.row]
                 currentIndex = indexPath.row
-                
-                detailViewController?.detailItem = object
-                detailViewController?.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
-                detailViewController?.navigationItem.leftItemsSupplementBackButton = true
             }
+            let object = objects[currentIndex]
+            detailViewController?.detailItem = object
+            detailViewController?.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
+            detailViewController?.navigationItem.leftItemsSupplementBackButton = true
+            
         }
     }
 
@@ -113,6 +117,9 @@ class MasterViewController: UITableViewController {
     override func setEditing(editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         if editing{
+            
+            detailViewController?.detailDescriptionLabel.editable = false
+            detailViewController?.detailDescriptionLabel.text = ""
             return
         }
         //when user clicks done the we exit from editing mode so we can save changes (delete)
@@ -120,6 +127,8 @@ class MasterViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didEndEditingRowAtIndexPath indexPath: NSIndexPath) {
+        detailViewController?.detailDescriptionLabel.editable = false
+        detailViewController?.detailDescriptionLabel.text = ""
         save()
     }
     

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, UITextViewDelegate {
 
     @IBOutlet weak var detailDescriptionLabel: UITextView!
 
@@ -38,7 +38,13 @@ class DetailViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         detailViewController = self
         detailDescriptionLabel.becomeFirstResponder()  //show keyboard
+        detailDescriptionLabel.delegate = self
         self.configureView()
+    }
+    
+    func textViewDidChange(textView: UITextView) {
+        objects[currentIndex] = detailDescriptionLabel.text
+        saveAndUpdate()
     }
 
     override func didReceiveMemoryWarning() {
@@ -57,6 +63,8 @@ class DetailViewController: UIViewController {
         }
         saveAndUpdate()
     }
+    
+    
     
     func saveAndUpdate(){
         //saving data and updating table view
