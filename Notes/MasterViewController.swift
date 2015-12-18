@@ -32,11 +32,6 @@ class MasterViewController: UITableViewController {
         let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "insertNewObject:")
         //adding + button in inavigation
         self.navigationItem.rightBarButtonItem = addButton
-        if let split = self.splitViewController {
-            let controllers = split.viewControllers
-            
-           detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
-        }
     }
 
     //this is called when navigating from detail view to master view
@@ -63,10 +58,11 @@ class MasterViewController: UITableViewController {
         if segue.identifier == "showDetail" {
             if let indexPath = self.tableView.indexPathForSelectedRow {
                 let object = objects[indexPath.row]
-                let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
-                controller.detailItem = object
-                controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
-                controller.navigationItem.leftItemsSupplementBackButton = true
+                currentIndex = indexPath.row
+                
+                detailViewController?.detailItem = object
+                detailViewController?.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
+                detailViewController?.navigationItem.leftItemsSupplementBackButton = true
             }
         }
     }

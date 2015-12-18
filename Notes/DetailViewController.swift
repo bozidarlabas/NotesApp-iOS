@@ -22,16 +22,22 @@ class DetailViewController: UIViewController {
 
     func configureView() {
         // Update the user interface for the detail item.
-        if let detail = self.detailItem {
-            if let label = self.detailDescriptionLabel {
-                label.text = detail.description
-            }
+        if objects.count == 0{
+            return
         }
+            if let label = self.detailDescriptionLabel {
+                label.text = objects[currentIndex]
+                if label.text == BLANK_NOTE {
+                    label.text = ""
+                }
+            }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        detailViewController = self
+        detailDescriptionLabel.becomeFirstResponder()  //show keyboard
         self.configureView()
     }
 
